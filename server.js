@@ -36,6 +36,21 @@ io.on("connection", (socket) => {
   console.log("User connected:", userId);
 
   socket.emit("connected", { message: "Connected to WS server" });
+
+  // receive from client
+  socket.on("client_message", (data) => {
+    console.log("From client:", data);
+
+    // respond back
+    socket.emit("server_message", {
+      message: "Server received: " + data.message,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
+  });
+
 });
 
 // Start server
